@@ -1,0 +1,35 @@
+# datamind-router — Python 3.11
+#
+# Lower bounds only: vLLM pins its own torch build, so let pip resolve
+# torch/transformers together with vllm rather than pinning them here.
+# For fully reproducible installs, generate a lockfile from a known-good
+# environment (e.g. `pip freeze > requirements.lock`).
+
+# --- Serving / API -----------------------------------------------------------
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+vllm>=0.6.4
+
+# --- SQL guardrails ----------------------------------------------------------
+sqlglot>=25.0.0
+
+# --- LLM providers -----------------------------------------------------------
+anthropic>=0.40.0
+
+# --- Fine-tuning -------------------------------------------------------------
+torch>=2.4.0
+transformers>=4.46.0
+peft>=0.13.0
+datasets>=3.0.0
+huggingface-hub>=0.26.0   # imported directly by src/eval/loader.py
+
+# --- MCP server --------------------------------------------------------------
+fastmcp>=2.0.0
+
+# --- Data modelling ----------------------------------------------------------
+pydantic>=2.7.0
+
+# --- Testing -----------------------------------------------------------------
+pytest>=8.0.0
+
+

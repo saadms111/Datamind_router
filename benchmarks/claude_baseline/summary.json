@@ -1,0 +1,47 @@
+{
+  "run_name": "claude_baseline",
+  "created_at": "2026-10-05T21:00:54+00:00",
+  "models": [
+    "claude-sonnet-5-5"
+  ],
+  "n_examples": 50,
+  "n_correct": 48,
+  "execution_accuracy": 0.96,
+  "status_counts": {
+    "success": 50
+  },
+  "failure_counts": {
+    "wrong_values": 2
+  },
+  "accuracy_by_complexity": {
+    "easy": {
+      "n": 26,
+      "accuracy": 0.9615384615384616
+    },
+    "hard": {
+      "n": 5,
+      "accuracy": 1.0
+    },
+    "medium": {
+      "n": 19,
+      "accuracy": 0.9473684210526315
+    }
+  },
+  "accuracy_by_route": {
+    "claude": {
+      "n": 50,
+      "accuracy": 0.96
+    }
+  },
+  "latency_ms": {
+    "mean": 1547.737376000041,
+    "p50": 1338.5493499999939,
+    "p95": 2486.6208300004464,
+    "max": 6247.219099999711
+  },
+  "total_prompt_tokens": 38405,
+  "total_completion_tokens": 3894,
+  "total_cost_usd": 0.11574999999999998,
+  "cost_per_1k_queries_usd": 2.3149999999999995,
+  "avg_llm_calls": 1.0
+}
