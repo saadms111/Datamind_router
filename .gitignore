@@ -9,3 +9,9 @@ venv/
 data/
 models/
 results/
+
+.coverage
+.vscode/
+__pycache__/
+.pytest_cache/
+.env
