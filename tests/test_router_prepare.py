@@ -92,3 +92,27 @@ def test_lora_targets_cover_attention_and_mlp() -> None:
     assert set(LORA_TARGET_MODULES) == {
         "q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"
     }
+
+
+def test_train_lora_warmup_steps_replace_removed_warmup_ratio() -> None:
+    from router.train_lora import TrainConfig, warmup_steps_for
+
+    cfg = TrainConfig(output_dir=Path("out"))
+    assert warmup_steps_for(cfg, 6657) == 13  # ceil(6657/32)=209 steps/epoch * 2 epochs * 3%
+    assert warmup_steps_for(TrainConfig(output_dir=Path("out"), max_steps=5), 200) == 1
+    assert warmup_steps_for(TrainConfig(output_dir=Path("out"), warmup_ratio=0.0), 6657) == 0
+
+
+def test_train_lora_drops_unsupported_training_arguments(caplog: pytest.LogCaptureFixture) -> None:
+    import dataclasses
+
+    from router.train_lora import supported_kwargs
+
+    @dataclasses.dataclass
+    class FakeArgs:
+        learning_rate: float = 0.1
+
+    with caplog.at_level("WARNING"):
+        kept = supported_kwargs(FakeArgs, {"learning_rate": 0.2, "warmup_ratio": 0.03})
+    assert kept == {"learning_rate": 0.2}
+    assert "warmup_ratio" in caplog.text

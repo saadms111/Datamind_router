@@ -13,10 +13,10 @@ Examples::
     PYTHONPATH=src python -m eval.run_eval --backend claude --run-name claude_baseline
 
     # Local model on vLLM; --gpu-hourly-usd is mandatory so the cost basis is explicit
-    PYTHONPATH=src python -m eval.run_eval --backend local --gpu-hourly-usd 0.35 \\
+    PYTHONPATH=src python -m eval.run_eval --backend local --gpu-hourly-usd 0.526 \\
         --run-name local_qwen15b
 
-    PYTHONPATH=src python -m eval.run_eval --backend routed --gpu-hourly-usd 0.35 \\
+    PYTHONPATH=src python -m eval.run_eval --backend routed --gpu-hourly-usd 0.526 \\
         --min-confidence -0.15 --run-name routed_qwen15b
 
 Run local/routed benchmarks on the machine hosting vLLM (e.g. the same Colab

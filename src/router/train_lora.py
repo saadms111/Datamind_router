@@ -29,12 +29,14 @@ Outputs under ``--output-dir``: ``adapter/`` (LoRA weights + tokenizer),
 from __future__ import annotations
 
 import argparse
+import dataclasses
 import json
 import logging
+import math
 import sys
-from collections.abc import Sequence
+from collections.abc import Mapping, Sequence
 from pathlib import Path
-from typing import Final
+from typing import Any, Final
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
@@ -84,6 +86,30 @@ class TrainConfig(BaseModel):
     limit_train: int | None = Field(default=None, ge=1)
     seed: int = 13
     resume: bool = False
+
+
+def warmup_steps_for(cfg: TrainConfig, n_train_examples: int) -> int:
+    """Warmup length in optimizer steps.
+
+    Recent transformers releases dropped ``warmup_ratio`` in favour of ``warmup_steps``,
+    which every release accepts as an integer, so the ratio is converted here instead of
+    depending on the installed version. Assumes a single device (the Colab T4 case).
+    """
+    if cfg.max_steps > 0:
+        total_steps = cfg.max_steps
+    else:
+        batch = cfg.per_device_batch_size * cfg.grad_accum_steps
+        total_steps = math.ceil(math.ceil(n_train_examples / batch) * cfg.epochs)
+    return max(1, round(total_steps * cfg.warmup_ratio)) if cfg.warmup_ratio > 0 else 0
+
+
+def supported_kwargs(cls: type, kwargs: Mapping[str, Any]) -> dict[str, Any]:
+    """Drop (and log) keyword arguments the installed ``cls`` dataclass does not define."""
+    valid = {f.name for f in dataclasses.fields(cls)}
+    unknown = sorted(set(kwargs) - valid)
+    if unknown:
+        logger.warning("Ignoring %s arguments not supported by the installed version: %s", cls.__name__, unknown)
+    return {k: v for k, v in kwargs.items() if k in valid}
 
 
 def train(cfg: TrainConfig) -> Path:
@@ -156,29 +182,34 @@ def train(cfg: TrainConfig) -> Path:
     model.print_trainable_parameters()
 
     args = TrainingArguments(
-        output_dir=str(cfg.output_dir / "checkpoints"),
-        num_train_epochs=cfg.epochs,
-        max_steps=cfg.max_steps,
-        per_device_train_batch_size=cfg.per_device_batch_size,
-        per_device_eval_batch_size=cfg.per_device_batch_size,
-        gradient_accumulation_steps=cfg.grad_accum_steps,
-        learning_rate=cfg.learning_rate,
-        lr_scheduler_type="cosine",
-        warmup_ratio=cfg.warmup_ratio,
-        weight_decay=cfg.weight_decay,
-        logging_steps=cfg.logging_steps,
-        eval_strategy="steps" if val_rows else "no",
-        eval_steps=cfg.eval_steps,
-        save_strategy="steps",
-        save_steps=cfg.save_steps,
-        save_total_limit=2,
-        bf16=use_bf16,
-        fp16=use_fp16,
-        gradient_checkpointing=cfg.gradient_checkpointing,
-        gradient_checkpointing_kwargs={"use_reentrant": False} if cfg.gradient_checkpointing else None,
-        report_to="none",
-        seed=cfg.seed,
-        remove_unused_columns=False,
+        **supported_kwargs(
+            TrainingArguments,
+            dict(
+                output_dir=str(cfg.output_dir / "checkpoints"),
+                num_train_epochs=cfg.epochs,
+                max_steps=cfg.max_steps,
+                per_device_train_batch_size=cfg.per_device_batch_size,
+                per_device_eval_batch_size=cfg.per_device_batch_size,
+                gradient_accumulation_steps=cfg.grad_accum_steps,
+                learning_rate=cfg.learning_rate,
+                lr_scheduler_type="cosine",
+                warmup_steps=warmup_steps_for(cfg, len(train_rows)),
+                weight_decay=cfg.weight_decay,
+                logging_steps=cfg.logging_steps,
+                eval_strategy="steps" if val_rows else "no",
+                eval_steps=cfg.eval_steps,
+                save_strategy="steps",
+                save_steps=cfg.save_steps,
+                save_total_limit=2,
+                bf16=use_bf16,
+                fp16=use_fp16,
+                gradient_checkpointing=cfg.gradient_checkpointing,
+                gradient_checkpointing_kwargs={"use_reentrant": False} if cfg.gradient_checkpointing else None,
+                report_to="none",
+                seed=cfg.seed,
+                remove_unused_columns=False,
+            ),
+        )
     )
     trainer = Trainer(
         model=model,
