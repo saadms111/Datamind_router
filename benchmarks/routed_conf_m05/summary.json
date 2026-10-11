@@ -1,0 +1,60 @@
+{
+  "run_name": "routed_conf_m05",
+  "created_at": "2026-10-11T01:07:33+00:00",
+  "models": [
+    "claude-sonnet-5-5",
+    "qwen2.5-coder-1.5b-tuned"
+  ],
+  "n_examples": 50,
+  "n_correct": 49,
+  "execution_accuracy": 0.98,
+  "status_counts": {
+    "success": 50
+  },
+  "failure_counts": {
+    "wrong_values": 1
+  },
+  "accuracy_by_complexity": {
+    "easy": {
+      "n": 26,
+      "accuracy": 1.0
+    },
+    "hard": {
+      "n": 5,
+      "accuracy": 1.0
+    },
+    "medium": {
+      "n": 19,
+      "accuracy": 0.9473684210526315
+    }
+  },
+  "accuracy_by_route": {
+    "claude": {
+      "n": 26,
+      "accuracy": 0.9615384615384616
+    },
+    "local": {
+      "n": 24,
+      "accuracy": 1.0
+    }
+  },
+  "latency_ms": {
+    "mean": 2061.8215701400277,
+    "p50": 1795.397315500395,
+    "p95": 5031.772232149909,
+    "max": 6149.106345999826
+  },
+  "total_prompt_tokens": 44634,
+  "total_completion_tokens": 4105,
+  "total_cost_usd": 0.07548640691801996,
+  "cost_per_1k_queries_usd": 1.509728138360399,
+  "avg_llm_calls": 1.6,
+  "assumptions": {
+    "local_model": "qwen2.5-coder-1.5b-tuned",
+    "gpu_hourly_usd": 0.526,
+    "gpu_concurrent_requests": 1.0,
+    "claude_model": "claude-sonnet-5-5",
+    "claude_usd_per_mtok_in_out": "2.0 / 10.0",
+    "min_confidence": -0.05
+  }
+}

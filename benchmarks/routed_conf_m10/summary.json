@@ -1,0 +1,61 @@
+{
+  "run_name": "routed_conf_m10",
+  "created_at": "2026-10-11T01:09:09+00:00",
+  "models": [
+    "claude-sonnet-5-5",
+    "qwen2.5-coder-1.5b-tuned"
+  ],
+  "n_examples": 50,
+  "n_correct": 46,
+  "execution_accuracy": 0.92,
+  "status_counts": {
+    "success": 50
+  },
+  "failure_counts": {
+    "wrong_row_count": 2,
+    "wrong_values": 2
+  },
+  "accuracy_by_complexity": {
+    "easy": {
+      "n": 26,
+      "accuracy": 0.9615384615384616
+    },
+    "hard": {
+      "n": 5,
+      "accuracy": 0.8
+    },
+    "medium": {
+      "n": 19,
+      "accuracy": 0.8947368421052632
+    }
+  },
+  "accuracy_by_route": {
+    "claude": {
+      "n": 15,
+      "accuracy": 0.9333333333333333
+    },
+    "local": {
+      "n": 35,
+      "accuracy": 0.9142857142857143
+    }
+  },
+  "latency_ms": {
+    "mean": 1845.9539966000102,
+    "p50": 1285.41381250011,
+    "p95": 4464.9315164002,
+    "max": 9622.322137000083
+  },
+  "total_prompt_tokens": 35123,
+  "total_completion_tokens": 3353,
+  "total_cost_usd": 0.04892215601400434,
+  "cost_per_1k_queries_usd": 0.9784431202800867,
+  "avg_llm_calls": 1.38,
+  "assumptions": {
+    "local_model": "qwen2.5-coder-1.5b-tuned",
+    "gpu_hourly_usd": 0.526,
+    "gpu_concurrent_requests": 1.0,
+    "claude_model": "claude-sonnet-5-5",
+    "claude_usd_per_mtok_in_out": "2.0 / 10.0",
+    "min_confidence": -0.1
+  }
+}

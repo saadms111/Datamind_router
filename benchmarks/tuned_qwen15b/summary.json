@@ -1,0 +1,56 @@
+{
+  "run_name": "tuned_qwen15b",
+  "created_at": "2026-10-11T00:37:19+00:00",
+  "models": [
+    "qwen2.5-coder-1.5b-tuned"
+  ],
+  "n_examples": 50,
+  "n_correct": 37,
+  "execution_accuracy": 0.74,
+  "status_counts": {
+    "success": 46,
+    "rejected": 4
+  },
+  "failure_counts": {
+    "wrong_row_count": 6,
+    "wrong_values": 2,
+    "guard_rejected": 4,
+    "wrong_column_count": 1
+  },
+  "accuracy_by_complexity": {
+    "easy": {
+      "n": 26,
+      "accuracy": 0.8461538461538461
+    },
+    "hard": {
+      "n": 5,
+      "accuracy": 0.6
+    },
+    "medium": {
+      "n": 19,
+      "accuracy": 0.631578947368421
+    }
+  },
+  "accuracy_by_route": {
+    "local": {
+      "n": 50,
+      "accuracy": 0.74
+    }
+  },
+  "latency_ms": {
+    "mean": 1337.3752101800073,
+    "p50": 970.3701160000264,
+    "p95": 3250.8101503000485,
+    "max": 4760.072542999978
+  },
+  "total_prompt_tokens": 23120,
+  "total_completion_tokens": 1815,
+  "total_cost_usd": 0.009751825931880665,
+  "cost_per_1k_queries_usd": 0.1950365186376133,
+  "avg_llm_calls": 1.08,
+  "assumptions": {
+    "local_model": "qwen2.5-coder-1.5b-tuned",
+    "gpu_hourly_usd": 0.526,
+    "gpu_concurrent_requests": 1.0
+  }
+}

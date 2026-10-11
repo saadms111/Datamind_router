@@ -1,0 +1,22 @@
+{
+  "model": "/content/drive/MyDrive/datamind/qwen15b/merged",
+  "served_name": "qwen2.5-coder-1.5b-tuned",
+  "vllm_version": "0.31.0",
+  "vllm_args": [
+    "/content/drive/MyDrive/datamind/qwen15b/merged",
+    "--served-model-name",
+    "qwen2.5-coder-1.5b-tuned",
+    "--dtype",
+    "half",
+    "--max-model-len",
+    "4096",
+    "--gpu-memory-utilization",
+    "0.80",
+    "--enforce-eager",
+    "--port",
+    "8000"
+  ],
+  "gpu": "Tesla T4",
+  "gpu_hourly_usd": 0.526,
+  "recorded_utc": "2026-10-11T00:40:38+00:00"
+}
